@@ -1,0 +1,59 @@
+﻿@model Sistema_Academia.Models.Modalidade
+
+@{
+    ViewData["Title"] = "Excluir Modalidade";
+}
+
+<h1 class="page-title">Excluir Modalidade</h1>
+
+<p class="page-description">
+    Confira os dados antes de confirmar a exclusão definitiva.
+</p>
+
+<div class="form-container">
+
+    <div class="alert-warning">
+        Atenção! A modalidade será removida permanentemente somente se não estiver vinculada a nenhuma matrícula.
+    </div>
+
+    <div class="details-grid">
+
+        <div class="detail-item">
+            <label>Nome</label>
+            <strong>@Model.Nome</strong>
+        </div>
+
+        <div class="detail-item">
+            <label>Capacidade máxima</label>
+            <strong>@Model.CapacidadeMaxima</strong>
+        </div>
+
+        <div class="detail-item">
+            <label>Professor</label>
+            <strong>@(string.IsNullOrWhiteSpace(Model.Professor) ? "Não informado" : Model.Professor)</strong>
+        </div>
+
+        <div class="detail-item">
+            <label>Status atual</label>
+            <strong>@(Model.Ativo ? "Ativo" : "Inativo")</strong>
+        </div>
+
+    </div>
+
+    <form asp-action="Excluir" method="post">
+
+        <input type="hidden" name="id" value="@Model.Id" />
+
+        <div class="form-actions">
+            <button type="submit" class="btn-danger">
+                Excluir definitivamente
+            </button>
+
+            <a asp-action="Index" class="btn-secondary">
+                Cancelar
+            </a>
+        </div>
+
+    </form>
+
+</div>

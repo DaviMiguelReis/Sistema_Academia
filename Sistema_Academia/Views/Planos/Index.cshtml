@@ -1,0 +1,115 @@
+﻿
+@model IEnumerable<Sistema_Academia.Models.Plano>
+
+@{
+    ViewData["Title"] = "Planos";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Planos</h1>
+        <p class="page-description">
+            Gerencie os planos oferecidos pela academia.
+        </p>
+    </div>
+
+    <div class="page-actions">
+        <a asp-action="Index" class="btn-secondary" title="Recarregar os dados dos planos">
+            ↻ Atualizar
+        </a>
+        <a asp-action="Cadastrar" class="btn-primary">
+            + Novo Plano
+        </a>
+    </div>
+</div>
+
+@if (TempData["Mensagem"] != null)
+{
+    <div class="alert-success">
+        @TempData["Mensagem"]
+    </div>
+}
+
+@if (TempData["Erro"] != null)
+{
+    <div class="validation-error">@TempData["Erro"]</div>
+}
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Valor</th>
+                <th>Duração</th>
+                <th>Status</th>
+                <th>Matrículas</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (Model.Any())
+            {
+                @foreach (var plano in Model)
+                {
+                    <tr>
+                        <td>@plano.Nome</td>
+
+                        <td>
+                            @plano.Valor.ToString("C2")
+                        </td>
+
+                        <td>
+                            @plano.DuracaoMeses
+                            @(plano.DuracaoMeses == 1 ? "mês" : "meses")
+                        </td>
+
+                        <td>
+                            @if (plano.Ativo)
+                            {
+                                <span class="status-active">Ativo</span>
+                            }
+                            else
+                            {
+                                <span class="status-inactive">Inativo</span>
+                            }
+                        </td>
+
+                        <td>
+                            @(plano.Matriculas?.Count ?? 0)
+                        </td>
+
+                        <td class="actions">
+                            <a asp-action="Detalhes"
+                               asp-route-id="@plano.Id"
+                               class="action-link">
+                                Detalhes
+                            </a>
+
+                            <a asp-action="Editar"
+                               asp-route-id="@plano.Id"
+                               class="action-link">
+                                Editar
+                            </a>
+
+                            <a asp-action="Excluir"
+                               asp-route-id="@plano.Id"
+                               class="action-link danger">
+                                Excluir
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6" class="empty-message">
+                        Nenhum plano cadastrado.
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

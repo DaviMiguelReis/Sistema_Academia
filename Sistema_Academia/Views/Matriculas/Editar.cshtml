@@ -1,0 +1,192 @@
+﻿@model Sistema_Academia.Models.Matricula
+
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    ViewData["Title"] = "Editar Matrícula";
+
+    var modalidades = ViewBag.Modalidades as IEnumerable<SelectListItem>
+        ?? Enumerable.Empty<SelectListItem>();
+
+    var modalidadesSelecionadas = ViewBag.ModalidadesSelecionadas as List<int>
+        ?? new List<int>();
+}
+
+<h1 class="page-title">Editar Matrícula</h1>
+
+<p class="page-description">
+    Altere os dados da matrícula cadastrada.
+</p>
+
+<div class="form-container">
+
+    <form asp-action="Editar" method="post">
+
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" asp-for="Id" />
+
+        <div asp-validation-summary="All"
+             class="validation-error"></div>
+
+        <h3 class="section-title">Dados da matrícula</h3>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label asp-for="DataMatricula">Data da matrícula</label>
+                <input asp-for="DataMatricula" type="date" class="form-control" readonly />
+                <span asp-validation-for="DataMatricula" class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="AlunoId">Aluno</label>
+
+                <select asp-for="AlunoId"
+                        asp-items="ViewBag.Alunos"
+                        class="form-control">
+                    <option value="">Selecione um aluno</option>
+                </select>
+
+                <span asp-validation-for="AlunoId"
+                      class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PlanoId">Plano</label>
+
+                <select asp-for="PlanoId"
+                        asp-items="ViewBag.Planos"
+                        class="form-control">
+                    <option value="">Selecione um plano</option>
+                </select>
+
+                <span asp-validation-for="PlanoId"
+                      class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DataInicio">Data de início</label>
+
+                <input asp-for="DataInicio"
+                       type="date"
+                       class="form-control" />
+
+                <span asp-validation-for="DataInicio"
+                      class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DataFim">Data de término</label>
+
+                <input asp-for="DataFim"
+                       type="date"
+                       class="form-control" />
+
+                <span asp-validation-for="DataFim"
+                      class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ValorContratado">Valor contratado</label>
+
+                <input asp-for="ValorContratado"
+                       type="number"
+                       step="0.01"
+                       min="0.01"
+                       class="form-control" />
+
+                <span asp-validation-for="ValorContratado"
+                      class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Status">Status</label>
+
+                <select asp-for="Status" class="form-control">
+                    <option value="Ativa">Ativa</option>
+                    <option value="Pendente">Pendente</option>
+                    <option value="Cancelada">Cancelada</option>
+                    <option value="Concluída">Concluída</option>
+                </select>
+
+                <span asp-validation-for="Status"
+                      class="validation-error"></span>
+            </div>
+
+            <div class="form-group full-width">
+                <label>Modalidades</label>
+
+                <p class="page-description">
+                    Selecione uma ou mais modalidades para esta matrícula.
+                </p>
+
+                <div class="checkbox-grid">
+
+                    @if (modalidades.Any())
+                    {
+                        foreach (var modalidade in modalidades)
+                        {
+                            var selecionada =
+                                int.TryParse(modalidade.Value, out var modalidadeId)
+                                && modalidadesSelecionadas.Contains(modalidadeId);
+
+                            <div class="checkbox-item">
+
+                                <input type="checkbox"
+                                       name="modalidadeIds"
+                                       value="@modalidade.Value"
+                                       id="modalidade_@modalidade.Value"
+                                       checked="@(selecionada ? "checked" : null)" />
+
+                                <label for="modalidade_@modalidade.Value">
+                                    @modalidade.Text
+                                </label>
+
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p>Nenhuma modalidade disponível.</p>
+                    }
+
+                </div>
+            </div>
+
+            <div class="form-group full-width">
+                <div class="checkbox-item">
+
+                    <input asp-for="Ativo" />
+
+                    <label asp-for="Ativo">
+                        Matrícula ativa
+                    </label>
+
+                </div>
+
+                <span asp-validation-for="Ativo"
+                      class="validation-error"></span>
+            </div>
+
+        </div>
+
+        <div class="form-actions">
+
+            <button type="submit" class="btn-primary">
+                Salvar Alterações
+            </button>
+
+            <a asp-action="Index" class="btn-secondary">
+                Cancelar
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

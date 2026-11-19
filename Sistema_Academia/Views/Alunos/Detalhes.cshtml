@@ -1,0 +1,112 @@
+﻿
+@model Sistema_Academia.Models.Aluno
+
+@{
+    ViewData["Title"] = "Detalhes do Aluno";
+
+    var cpf = string.IsNullOrWhiteSpace(Model.CPF)
+        ? "Não informado"
+        : System.Text.RegularExpressions.Regex.Replace(
+            Model.CPF, @"\D", "");
+
+    if (cpf.Length == 11)
+    {
+        cpf = Convert.ToUInt64(cpf).ToString(@"000\.000\.000\-00");
+    }
+    else
+    {
+        cpf = Model.CPF ?? "Não informado";
+    }
+
+    var telefone = string.IsNullOrWhiteSpace(Model.Telefone)
+        ? "Não informado"
+        : System.Text.RegularExpressions.Regex.Replace(
+            Model.Telefone, @"\D", "");
+
+    if (telefone.Length == 11)
+    {
+        telefone = Convert.ToUInt64(telefone).ToString(@"(00) 00000-0000");
+    }
+    else if (telefone.Length == 10)
+    {
+        telefone = Convert.ToUInt64(telefone).ToString(@"(00) 0000-0000");
+    }
+    else
+    {
+        telefone = Model.Telefone ?? "Não informado";
+    }
+}
+
+<h1 class="page-title">Detalhes do Aluno</h1>
+
+<p class="page-description">
+    Consulte as informações cadastradas.
+</p>
+
+<div class="form-container">
+
+    <div class="details-grid">
+
+        <div class="detail-item">
+            <label>Nome completo</label>
+            <strong>@Model.Nome</strong>
+        </div>
+
+        <div class="detail-item">
+            <label>CPF</label>
+            <strong>@cpf</strong>
+        </div>
+
+        <div class="detail-item">
+            <label>Data de nascimento</label>
+            <strong>@Model.DataNascimento.ToString("dd/MM/yyyy")</strong>
+        </div>
+
+        <div class="detail-item">
+            <label>E-mail</label>
+            <strong>@Model.Email</strong>
+        </div>
+
+        <div class="detail-item">
+            <label>Telefone</label>
+            <strong>@telefone</strong>
+        </div>
+
+        <div class="detail-item">
+            <label>Endereço</label>
+            <strong>@Model.Endereco</strong>
+        </div>
+
+        <div class="detail-item">
+            <label>Data de cadastro</label>
+            <strong>@Model.DataCadastro.ToString("dd/MM/yyyy")</strong>
+        </div>
+
+        <div class="detail-item">
+            <label>Status</label>
+
+            @if (Model.Ativo)
+            {
+                <span class="status-active">Ativo</span>
+            }
+            else
+            {
+                <span class="status-inactive">Inativo</span>
+            }
+        </div>
+
+    </div>
+
+    <div class="form-actions">
+        <a asp-action="Editar"
+           asp-route-id="@Model.Id"
+           class="btn-primary">
+            Editar Aluno
+        </a>
+
+        <a asp-action="Index" class="btn-secondary">
+            Voltar
+        </a>
+    </div>
+
+</div>

@@ -1,0 +1,113 @@
+﻿@model IEnumerable<Sistema_Academia.Models.Modalidade>
+
+@{
+    ViewData["Title"] = "Modalidades";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Modalidades</h1>
+        <p class="page-description">
+            Gerencie as modalidades cadastradas na academia.
+        </p>
+    </div>
+
+    <a asp-action="Cadastrar" class="btn-primary">
+        + Nova Modalidade
+    </a>
+</div>
+
+<form asp-action="Index" method="get" class="search-form">
+    <input type="text"
+           name="pesquisa"
+           class="form-control"
+           placeholder="Pesquisar modalidade pelo nome..."
+           value="@Context.Request.Query["pesquisa"]" />
+
+    <button type="submit" class="btn-primary">
+        Pesquisar
+    </button>
+
+    <a asp-action="Index" class="btn-secondary">
+        Limpar
+    </a>
+</form>
+
+@if (TempData["Mensagem"] != null)
+{
+    <div class="alert-success">
+        @TempData["Mensagem"]
+    </div>
+}
+
+@if (TempData["Erro"] != null)
+{
+    <div class="validation-error">@TempData["Erro"]</div>
+}
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Capacidade</th>
+                <th>Professor</th>
+                <th>Ativo</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (Model.Any())
+            {
+                @foreach (var modalidade in Model)
+                {
+                    <tr>
+                        <td>@modalidade.Nome</td>
+                        <td>@modalidade.CapacidadeMaxima</td>
+                        <td>@modalidade.Professor</td>
+
+                        <td>
+                            @if (modalidade.Ativo)
+                            {
+                                <span class="status-active">Ativo</span>
+                            }
+                            else
+                            {
+                                <span class="status-inactive">Inativo</span>
+                            }
+                        </td>
+
+                        <td class="actions">
+                            <a asp-action="Detalhes"
+                               asp-route-id="@modalidade.Id"
+                               class="action-link">
+                                Detalhes
+                            </a>
+
+                            <a asp-action="Editar"
+                               asp-route-id="@modalidade.Id"
+                               class="action-link">
+                                Editar
+                            </a>
+
+                            <a asp-action="Excluir"
+                               asp-route-id="@modalidade.Id"
+                               class="action-link danger">
+                                Excluir
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" class="empty-message">
+                        Nenhuma modalidade cadastrada.
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

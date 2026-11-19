@@ -1,0 +1,83 @@
+﻿
+@model Sistema_Academia.Models.Plano
+
+@{
+    ViewData["Title"] = "Detalhes do Plano";
+}
+
+<h1 class="page-title">Detalhes do Plano</h1>
+
+<p class="page-description">
+    Consulte as informações cadastradas.
+</p>
+
+<div class="form-container">
+
+    <div class="details-grid">
+
+        <div class="detail-item">
+            <label>Nome do plano</label>
+            <strong>@Model.Nome</strong>
+        </div>
+
+        <div class="detail-item">
+            <label>Descrição</label>
+            <strong>
+                @(string.IsNullOrWhiteSpace(Model.Descricao)
+                    ? "Não informada"
+                    : Model.Descricao)
+            </strong>
+        </div>
+
+        <div class="detail-item">
+            <label>Valor</label>
+            <strong>
+                @Model.Valor.ToString(
+                    "C2",
+                    System.Globalization.CultureInfo.GetCultureInfo("pt-BR"))
+            </strong>
+        </div>
+
+        <div class="detail-item">
+            <label>Duração</label>
+            <strong>
+                @Model.DuracaoMeses
+                @(Model.DuracaoMeses == 1 ? "mês" : "meses")
+            </strong>
+        </div>
+
+        <div class="detail-item">
+            <label>Quantidade de matrículas</label>
+            <strong>@(Model.Matriculas?.Count ?? 0)</strong>
+        </div>
+
+        <div class="detail-item">
+            <label>Status</label>
+
+            @if (Model.Ativo)
+            {
+                <span class="status-active">Ativo</span>
+            }
+            else
+            {
+                <span class="status-inactive">Inativo</span>
+            }
+        </div>
+
+    </div>
+
+    <div class="form-actions">
+
+        <a asp-action="Editar"
+           asp-route-id="@Model.Id"
+           class="btn-primary">
+            Editar Plano
+        </a>
+
+        <a asp-action="Index" class="btn-secondary">
+            Voltar
+        </a>
+
+    </div>
+
+</div>

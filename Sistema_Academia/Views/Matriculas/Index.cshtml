@@ -1,0 +1,150 @@
+﻿@model IEnumerable<Sistema_Academia.Models.Matricula>
+
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Matrículas";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Matrículas</h1>
+
+        <p class="page-description">
+            Gerencie as matrículas dos alunos da academia.
+        </p>
+    </div>
+
+    <a asp-action="Cadastrar" class="btn-primary">
+        + Nova Matrícula
+    </a>
+</div>
+
+<form asp-action="Index" method="get" class="search-form">
+    <input type="text"
+           name="pesquisa"
+           class="form-control"
+           placeholder="Pesquisar matrícula pelo aluno ou status..."
+           value="@Context.Request.Query["pesquisa"]" />
+
+    <button type="submit" class="btn-primary">
+        Pesquisar
+    </button>
+
+    <a asp-action="Index" class="btn-secondary">
+        Limpar
+    </a>
+</form>
+
+@if (TempData["Mensagem"] != null)
+{
+    <div class="alert-success">
+        @TempData["Mensagem"]
+    </div>
+}
+
+@if (TempData["Erro"] != null)
+{
+    <div class="validation-error">@TempData["Erro"]</div>
+}
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Aluno</th>
+                <th>Plano</th>
+                <th>Data da matrícula</th>
+                <th>Período</th>
+                <th>Valor</th>
+                <th>Status</th>
+                <th>Ativo</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var matricula in Model)
+                {
+                    <tr>
+                        <td>@matricula.Id</td>
+
+                        <td>
+                            @(matricula.Aluno?.Nome ?? "Não informado")
+                        </td>
+
+                        <td>
+                            @(matricula.Plano?.Nome ?? "Não informado")
+                        </td>
+
+                        <td>
+                            @matricula.DataMatricula.ToString("dd/MM/yyyy")
+                        </td>
+
+                        <td>
+                            @matricula.DataInicio.ToString("dd/MM/yyyy")
+                            até
+                            @(matricula.DataFim?.ToString("dd/MM/yyyy") ?? "Não definido")
+                        </td>
+
+                        <td>
+                            @matricula.ValorContratado.ToString("C", new CultureInfo("pt-BR"))
+                        </td>
+
+                        <td>
+                            <span class="status-badge">
+                                @matricula.Status
+                            </span>
+                        </td>
+
+                        <td>
+                            @if (matricula.Ativo)
+                            {
+                                <span class="status-active">Ativo</span>
+                            }
+                            else
+                            {
+                                <span class="status-inactive">Inativo</span>
+                            }
+                        </td>
+
+                        <td>
+                            <div class="actions">
+
+                                <a asp-action="Detalhes"
+                                   asp-route-id="@matricula.Id"
+                                   class="action-link">
+                                    Detalhes
+                                </a>
+
+                                <a asp-action="Editar"
+                                   asp-route-id="@matricula.Id"
+                                   class="action-link">
+                                    Editar
+                                </a>
+
+                                <a asp-action="Excluir"
+                                   asp-route-id="@matricula.Id"
+                                   class="action-link danger">
+                                    Excluir
+                                </a>
+
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="9" class="empty-message">
+                        Nenhuma matrícula cadastrada.
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,88 @@
+@model Sistema_Academia.Models.Pagamento
+
+@{
+    ViewData["Title"] = "Detalhes do Pagamento";
+}
+
+<h1 class="page-title">Detalhes do Pagamento</h1>
+
+<p class="page-description">
+    Consulte as informações cadastradas do pagamento.
+</p>
+
+@if (TempData["Erro"] != null)
+{
+    <div class="validation-error">@TempData["Erro"]</div>
+}
+
+<div class="form-container">
+
+    <div class="details-grid">
+
+        <div class="detail-item">
+            <label>Aluno</label>
+            <strong>
+                @(Model.Matricula?.Aluno?.Nome ?? "Não informado")
+            </strong>
+        </div>
+
+        <div class="detail-item">
+            <label>Matrícula</label>
+            <strong>@Model.MatriculaId</strong>
+        </div>
+
+        <div class="detail-item">
+            <label>Valor</label>
+            <strong>@Model.Valor.ToString("C2")</strong>
+        </div>
+
+        <div class="detail-item">
+            <label>Data de vencimento</label>
+            <strong>
+                @Model.DataVencimento.ToString("dd/MM/yyyy")
+            </strong>
+        </div>
+
+        <div class="detail-item">
+            <label>Data do pagamento</label>
+            <strong>
+                @Model.DataPagamento?.ToString("dd/MM/yyyy")
+            </strong>
+        </div>
+
+        <div class="detail-item">
+            <label>Forma de pagamento</label>
+            <strong>@Model.FormaPagamento</strong>
+        </div>
+
+        <div class="detail-item">
+            <label>Status</label>
+            <strong>@Model.Status</strong>
+        </div>
+
+        <div class="detail-item">
+            <label>Observação</label>
+            <strong>
+                @(string.IsNullOrWhiteSpace(Model.Observacao)
+                    ? "Nenhuma observação informada."
+                    : Model.Observacao)
+            </strong>
+        </div>
+
+    </div>
+
+    <div class="form-actions">
+
+        <a asp-action="Editar"
+           asp-route-id="@Model.Id"
+           class="btn-primary">
+            Editar Pagamento
+        </a>
+
+        <a asp-action="Index" class="btn-secondary">
+            Voltar
+        </a>
+
+    </div>
+
+</div>

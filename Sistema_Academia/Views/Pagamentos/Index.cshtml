@@ -1,0 +1,93 @@
+﻿@model IEnumerable<Sistema_Academia.Models.Pagamento>
+
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Pagamentos";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Pagamentos</h1>
+        <p class="page-description">
+            Gerencie os pagamentos realizados pelos alunos.
+        </p>
+    </div>
+    <a asp-action="Cadastrar" class="btn-primary">+ Novo Pagamento</a>
+</div>
+
+<form asp-action="Index" method="get" class="search-form">
+    <input type="text"
+           name="pesquisa"
+           class="form-control"
+           placeholder="Pesquisar por aluno, status ou forma de pagamento..."
+           value="@ViewBag.Pesquisa" />
+    <button type="submit" class="btn-primary">Pesquisar</button>
+    <a asp-action="Index" class="btn-secondary">Limpar</a>
+</form>
+
+@if (TempData["Mensagem"] != null)
+{
+    <div class="alert-success">@TempData["Mensagem"]</div>
+}
+@if (TempData["Erro"] != null)
+{
+    <div class="validation-error">@TempData["Erro"]</div>
+}
+
+<div class="table-container">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Aluno</th>
+                <th>Matrícula</th>
+                <th>Valor</th>
+                <th>Vencimento</th>
+                <th>Data do pagamento</th>
+                <th>Forma de pagamento</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var pagamento in Model)
+            {
+                <tr>
+                    <td>@pagamento.Id</td>
+                    <td>@(pagamento.Matricula?.Aluno?.Nome ?? "Não informado")</td>
+                    <td>@pagamento.MatriculaId</td>
+                    <td>@pagamento.Valor.ToString("C", new CultureInfo("pt-BR"))</td>
+                    <td>@pagamento.DataVencimento.ToString("dd/MM/yyyy")</td>
+                    <td>@(pagamento.DataPagamento?.ToString("dd/MM/yyyy") ?? "Não realizado")</td>
+                    <td>@pagamento.FormaPagamento</td>
+                    <td><span class="status-badge">@pagamento.Status</span></td>
+                    <td>
+                        <div class="table-actions">
+                            <a asp-action="Detalhes" asp-route-id="@pagamento.Id" class="btn-info">Detalhes</a>
+                            <a asp-action="Editar" asp-route-id="@pagamento.Id" class="btn-warning">Editar</a>
+                            @if (!string.Equals(pagamento.Status, "Cancelado", StringComparison.OrdinalIgnoreCase)
+                                && !string.Equals(pagamento.Status, "Pago", StringComparison.OrdinalIgnoreCase))
+                            {
+                                <a asp-action="Excluir" asp-route-id="@pagamento.Id" class="btn-danger">Cancelar</a>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="9" class="empty-message">Nenhum pagamento encontrado.</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+<div class="list-footer">
+    Total de pagamentos: <strong>@(Model?.Count() ?? 0)</strong>
+</div>

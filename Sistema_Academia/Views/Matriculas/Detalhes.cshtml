@@ -1,0 +1,180 @@
+﻿@model Sistema_Academia.Models.Matricula
+
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Detalhes da Matrícula";
+}
+
+<h1 class="page-title">Detalhes da Matrícula</h1>
+
+<p class="page-description">
+    Consulte todas as informações da matrícula.
+</p>
+
+<div class="form-container">
+
+    <h3 class="section-title">Dados da matrícula</h3>
+
+    <div class="form-grid">
+
+        <div class="form-group">
+            <label>Código da matrícula</label>
+            <input value="@Model.Id" class="form-control" readonly />
+        </div>
+
+        <div class="form-group">
+            <label>Data da matrícula</label>
+            <input value="@Model.DataMatricula.ToString("dd/MM/yyyy")"
+                   class="form-control" readonly />
+        </div>
+
+        <div class="form-group">
+            <label>Aluno</label>
+            <input value="@(Model.Aluno?.Nome ?? "Não informado")"
+                   class="form-control" readonly />
+        </div>
+
+        <div class="form-group">
+            <label>Plano contratado</label>
+            <input value="@(Model.Plano?.Nome ?? "Não informado")"
+                   class="form-control" readonly />
+        </div>
+
+        <div class="form-group">
+            <label>Data de início</label>
+            <input value="@Model.DataInicio.ToString("dd/MM/yyyy")"
+                   class="form-control" readonly />
+        </div>
+
+        <div class="form-group">
+            <label>Data de término</label>
+            <input value="@(Model.DataFim?.ToString("dd/MM/yyyy") ?? "Não definida")"
+                   class="form-control" readonly />
+        </div>
+
+        <div class="form-group">
+            <label>Valor contratado</label>
+            <input value="@Model.ValorContratado.ToString("C", new CultureInfo("pt-BR"))"
+                   class="form-control" readonly />
+        </div>
+
+        <div class="form-group">
+            <label>Status</label>
+            <input value="@Model.Status"
+                   class="form-control" readonly />
+        </div>
+
+        <div class="form-group">
+            <label>Situação</label>
+            <input value="@(Model.Ativo ? "Ativa" : "Inativa")"
+                   class="form-control" readonly />
+        </div>
+
+    </div>
+
+    <h3 class="section-title">Modalidades contratadas</h3>
+
+    @if (Model.MatriculaModalidades != null &&
+         Model.MatriculaModalidades.Any())
+    {
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Modalidade</th>
+                        <th>Professor</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model.MatriculaModalidades)
+                    {
+                        <tr>
+                            <td>
+                                @(item.Modalidade?.Nome ?? "Não informado")
+                            </td>
+
+                            <td>
+                                @(item.Modalidade?.Professor ?? "Não informado")
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p class="text-muted">
+            Nenhuma modalidade vinculada a esta matrícula.
+        </p>
+    }
+
+    <h3 class="section-title">Pagamentos</h3>
+
+    @if (Model.Pagamentos != null && Model.Pagamentos.Any())
+    {
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Valor</th>
+                        <th>Vencimento</th>
+                        <th>Data do pagamento</th>
+                        <th>Forma de pagamento</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var pagamento in Model.Pagamentos)
+                    {
+                        <tr>
+                            <td>
+                                @pagamento.Valor.ToString("C", new CultureInfo("pt-BR"))
+                            </td>
+
+                            <td>
+                                @pagamento.DataVencimento.ToString("dd/MM/yyyy")
+                            </td>
+
+                            <td>
+                                @(pagamento.DataPagamento?.ToString("dd/MM/yyyy") ?? "Não realizado")
+                            </td>
+
+                            <td>
+                                @pagamento.FormaPagamento
+                            </td>
+
+                            <td>
+                                @pagamento.Status
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p class="text-muted">
+            Nenhum pagamento registrado para esta matrícula.
+        </p>
+    }
+
+    <div class="form-actions">
+
+        <a asp-action="Editar"
+           asp-route-id="@Model.Id"
+           class="btn-primary">
+            Editar Matrícula
+        </a>
+
+        <a asp-action="Index" class="btn-secondary">
+            Voltar
+        </a>
+
+    </div>
+
+</div>

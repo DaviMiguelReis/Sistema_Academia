@@ -1,0 +1,138 @@
+
+@model Sistema_Academia.Models.Aluno
+
+@{
+    ViewData["Title"] = "Editar Aluno";
+}
+
+<h1 class="page-title">Editar Aluno</h1>
+
+<p class="page-description">
+    Atualize as informações do aluno.
+</p>
+
+<div class="form-container">
+    <form asp-action="Editar" method="post">
+
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="DataCadastro" />
+
+        <div asp-validation-summary="ModelOnly"
+             class="validation-error"></div>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label asp-for="Nome">Nome completo</label>
+                <input asp-for="Nome" class="form-control" />
+                <span asp-validation-for="Nome"
+                      class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CPF">CPF</label>
+                <input asp-for="CPF"
+                       class="form-control"
+                       type="text"
+                       inputmode="numeric"
+                       maxlength="11"
+                       minlength="11"
+                       pattern="[0-9]{11}"
+                       placeholder="Digite somente os 11 números"
+                       autocomplete="off" />
+                <span asp-validation-for="CPF"
+                      class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DataNascimento">
+                    Data de nascimento
+                </label>
+                <input asp-for="DataNascimento"
+                       type="date"
+                       class="form-control" />
+                <span asp-validation-for="DataNascimento"
+                      class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email">E-mail</label>
+                <input asp-for="Email"
+                       type="email"
+                       class="form-control" />
+                <span asp-validation-for="Email"
+                      class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Telefone">Telefone</label>
+                <input asp-for="Telefone"
+                       type="tel"
+                       class="form-control"
+                       maxlength="15"
+                       inputmode="numeric"
+                       placeholder="(27) 99999-9999"
+                       autocomplete="off" />
+                <span asp-validation-for="Telefone"
+                      class="validation-error"></span>
+            </div>
+
+            <div class="form-group full-width">
+                <label asp-for="Endereco">Endereço</label>
+                <input asp-for="Endereco" class="form-control" />
+                <span asp-validation-for="Endereco"
+                      class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Ativo">Situação do aluno</label>
+                <select asp-for="Ativo" class="form-control">
+                    <option value="true">Ativo</option>
+                    <option value="false">Inativo</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">
+                Salvar Alterações
+            </button>
+
+            <a asp-action="Index" class="btn-secondary">
+                Cancelar
+            </a>
+        </div>
+
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.9/jquery.inputmask.min.js"></script>
+
+    <script>
+
+        // Máscara de telefone: (27) 99999-9999 ou (27) 9999-9999
+        const campoTelefone = document.getElementById("Telefone");
+        if (campoTelefone) {
+            const formatarTelefone = (valor) => {
+                const numeros = valor.replace(/\D/g, "").slice(0, 11);
+                if (numeros.length <= 2) return numeros;
+                if (numeros.length <= 6) return `(${numeros.slice(0, 2)}) ${numeros.slice(2)}`;
+                if (numeros.length <= 10) return `(${numeros.slice(0, 2)}) ${numeros.slice(2, 6)}-${numeros.slice(6)}`;
+                return `(${numeros.slice(0, 2)}) ${numeros.slice(2, 7)}-${numeros.slice(7)}`;
+            };
+
+            campoTelefone.addEventListener("input", function () {
+                this.value = formatarTelefone(this.value);
+            });
+
+            // Formata também um telefone já preenchido ao abrir a edição.
+            if (campoTelefone.value) {
+                campoTelefone.value = formatarTelefone(campoTelefone.value);
+            }
+        }
+    </script>
+}

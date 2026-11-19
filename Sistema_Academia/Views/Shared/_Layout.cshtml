@@ -1,0 +1,114 @@
+﻿
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - FitManager</title>
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+
+<body>
+    <div class="app-container">
+
+        <!-- MENU LATERAL -->
+        <aside class="sidebar">
+
+            <div class="brand">
+                <div class="brand-icon">F</div>
+                <div>
+                    <h2>FIT<span>MANAGER</span></h2>
+                    <small>GESTÃO DE ACADEMIA</small>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+
+                <span class="menu-title">MENU PRINCIPAL</span>
+
+                <a asp-controller="Home" asp-action="Index"
+                   class="nav-link">
+                    <span class="nav-icon">⌂</span>
+                    Dashboard
+                </a>
+
+                <span class="menu-title">GERENCIAMENTO</span>
+
+                <a asp-controller="Alunos" asp-action="Index"
+                   class="nav-link">
+                    <span class="nav-icon">♙</span>
+                    Alunos
+                </a>
+
+                <a asp-controller="Modalidades" asp-action="Index"
+                   class="nav-link">
+                    <span class="nav-icon">✦</span>
+                    Modalidades
+                </a>
+
+                <a asp-controller="Planos" asp-action="Index"
+                   class="nav-link">
+                    <span class="nav-icon">▤</span>
+                    Planos
+                </a>
+
+                <a asp-controller="Matriculas" asp-action="Index"
+                   class="nav-link">
+                    <span class="nav-icon">▣</span>
+                    Matrículas
+                </a>
+
+                <a asp-controller="Pagamentos" asp-action="Index"
+                   class="nav-link">
+                    <span class="nav-icon">＄</span>
+                    Pagamentos
+                </a>
+
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="status-indicator"></div>
+                <div>
+                    <strong>Sistema online</strong>
+                    <small>FitManager v5.0</small>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- ÁREA PRINCIPAL -->
+        <main class="main-content">
+
+            <header class="topbar">
+                <div>
+                    <h3>FitManager</h3>
+                    <span>Sistema de gerenciamento de academia</span>
+                </div>
+
+                <div class="user-info">
+                    <div class="user-avatar">A</div>
+                    <div>
+                        <strong>Administrador</strong>
+                        <small>Gestor</small>
+                    </div>
+                </div>
+            </header>
+
+            <section class="page-content">
+                @RenderBody()
+            </section>
+
+            <footer class="footer">
+                &copy; @DateTime.Now.Year FitManager
+                - Sistema de Gerenciamento de Academia
+            </footer>
+
+        </main>
+
+    </div>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

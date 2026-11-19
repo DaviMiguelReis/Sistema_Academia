@@ -1,0 +1,126 @@
+﻿@model Sistema_Academia.Models.Pagamento
+
+@{
+    ViewData["Title"] = "Cadastrar Pagamento";
+}
+
+<h1 class="page-title">Cadastrar Pagamento</h1>
+
+<p class="page-description">
+    Preencha os dados para cadastrar um novo pagamento na academia.
+</p>
+
+<div class="form-container">
+    <form asp-controller="Pagamentos" asp-action="Cadastrar" method="post" id="formPagamento">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="All" class="validation-error"></div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label asp-for="MatriculaId"></label>
+                <select asp-for="MatriculaId"
+                        asp-items="ViewBag.Matriculas"
+                        class="form-control">
+                    <option value="">Selecione uma matrícula</option>
+                </select>
+                <span asp-validation-for="MatriculaId" class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Valor"></label>
+                <input asp-for="Valor" type="number" step="0.01" min="0.01"
+                       class="form-control" placeholder="Ex.: 99,90" />
+                <span asp-validation-for="Valor" class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DataVencimento"></label>
+                <input asp-for="DataVencimento" type="date" class="form-control" />
+                <span asp-validation-for="DataVencimento" class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Status"></label>
+                <select asp-for="Status" class="form-control">
+                    <option value="">Selecione o status</option>
+                    <option value="Pendente">Pendente</option>
+                    <option value="Pago">Pago</option>
+                    <option value="Atrasado">Atrasado</option>
+                </select>
+                <span asp-validation-for="Status" class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="FormaPagamento"></label>
+                <select asp-for="FormaPagamento" class="form-control">
+                    <option value="">Selecione a forma de pagamento</option>
+                    <option value="Dinheiro">Dinheiro</option>
+                    <option value="Pix">Pix</option>
+                    <option value="Cartão de crédito">Cartão de crédito</option>
+                    <option value="Cartão de débito">Cartão de débito</option>
+                    <option value="Transferência">Transferência</option>
+                </select>
+                <span asp-validation-for="FormaPagamento" class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DataPagamento"></label>
+                <input asp-for="DataPagamento" type="date" class="form-control" />
+                <span asp-validation-for="DataPagamento" class="validation-error"></span>
+                <small>Preencha somente quando o status for Pago.</small>
+            </div>
+
+            <div class="form-group full-width">
+                <label asp-for="Observacao"></label>
+                <textarea asp-for="Observacao" class="form-control" rows="4"
+                          placeholder="Observações sobre o pagamento"></textarea>
+                <span asp-validation-for="Observacao" class="validation-error"></span>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" id="btnCadastrarPagamento" class="btn-primary">Cadastrar Pagamento</button>
+            <a asp-action="Index" class="btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("formPagamento");
+            const status = document.getElementById("Status");
+            const dataPagamento = document.getElementById("DataPagamento");
+            const botao = document.getElementById("btnCadastrarPagamento");
+
+            function ajustarDataPagamento() {
+                if (status && status.value !== "Pago" && dataPagamento) {
+                    dataPagamento.value = "";
+                    dataPagamento.disabled = true;
+                } else if (dataPagamento) {
+                    dataPagamento.disabled = false;
+                }
+            }
+
+            if (status) {
+                status.addEventListener("change", ajustarDataPagamento);
+                ajustarDataPagamento();
+            }
+
+            if (form) {
+                form.addEventListener("submit", function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        form.reportValidity();
+                        return;
+                    }
+                    if (botao) {
+                        botao.disabled = true;
+                        botao.textContent = "Salvando...";
+                    }
+                });
+            }
+        });
+    </script>
+}

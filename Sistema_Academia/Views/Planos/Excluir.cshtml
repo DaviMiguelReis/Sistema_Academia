@@ -1,0 +1,87 @@
+﻿
+@model Sistema_Academia.Models.Plano
+
+@{
+    ViewData["Title"] = "Excluir Plano";
+}
+
+<h1 class="page-title">Excluir Plano</h1>
+
+<p class="page-description">
+    Confira as informações antes de confirmar a exclusão definitiva.
+</p>
+
+<div class="form-container">
+
+    <div class="alert-warning">
+        Atenção! Este plano será desativado e deixará de estar
+        disponível para novas matrículas. Seu histórico será preservado.
+    </div>
+
+    <div class="details-grid">
+
+        <div class="detail-item">
+            <label>Nome</label>
+            <strong>@Model.Nome</strong>
+        </div>
+
+        <div class="detail-item">
+            <label>Descrição</label>
+            <strong>
+                @(string.IsNullOrWhiteSpace(Model.Descricao)
+                    ? "Não informada"
+                    : Model.Descricao)
+            </strong>
+        </div>
+
+        <div class="detail-item">
+            <label>Valor</label>
+            <strong>
+                @Model.Valor.ToString(
+                    "C2",
+                    System.Globalization.CultureInfo.GetCultureInfo("pt-BR"))
+            </strong>
+        </div>
+
+        <div class="detail-item">
+            <label>Duração</label>
+            <strong>
+                @Model.DuracaoMeses
+                @(Model.DuracaoMeses == 1 ? "mês" : "meses")
+            </strong>
+        </div>
+
+        <div class="detail-item">
+            <label>Status</label>
+
+            @if (Model.Ativo)
+            {
+                <span class="status-active">Ativo</span>
+            }
+            else
+            {
+                <span class="status-inactive">Inativo</span>
+            }
+        </div>
+
+    </div>
+
+    <form asp-action="Excluir" method="post">
+
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-actions">
+
+            <button type="submit" class="btn-danger">
+                Excluir definitivamente
+            </button>
+
+            <a asp-action="Index" class="btn-secondary">
+                Cancelar
+            </a>
+
+        </div>
+
+    </form>
+
+</div>

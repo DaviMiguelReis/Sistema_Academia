@@ -1,0 +1,95 @@
+﻿@model Sistema_Academia.Models.Matricula
+
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Excluir Matrícula";
+}
+
+<h1 class="page-title">Excluir Matrícula</h1>
+
+<p class="page-description">
+    Confira os dados antes de confirmar a exclusão definitiva.
+</p>
+
+<div class="form-container">
+
+    <div class="alert-warning">
+        <strong>Atenção!</strong>
+        Você está prestes a excluir esta matrícula permanentemente. Os pagamentos e os vínculos de modalidades desta matrícula também serão excluídos.
+    </div>
+
+    <h3 class="section-title">Dados da matrícula</h3>
+
+    <div class="form-grid">
+
+        <div class="form-group">
+            <label>Código da matrícula</label>
+            <input value="@Model.Id" class="form-control" readonly />
+        </div>
+
+        <div class="form-group">
+            <label>Aluno</label>
+            <input value="@(Model.Aluno?.Nome ?? "Não informado")"
+                   class="form-control" readonly />
+        </div>
+
+        <div class="form-group">
+            <label>Plano</label>
+            <input value="@(Model.Plano?.Nome ?? "Não informado")"
+                   class="form-control" readonly />
+        </div>
+
+        <div class="form-group">
+            <label>Data da matrícula</label>
+            <input value="@Model.DataMatricula.ToString("dd/MM/yyyy")"
+                   class="form-control" readonly />
+        </div>
+
+        <div class="form-group">
+            <label>Data de início</label>
+            <input value="@Model.DataInicio.ToString("dd/MM/yyyy")"
+                   class="form-control" readonly />
+        </div>
+
+        <div class="form-group">
+            <label>Data de término</label>
+            <input value="@(Model.DataFim?.ToString("dd/MM/yyyy") ?? "Não definida")"
+                   class="form-control" readonly />
+        </div>
+
+        <div class="form-group">
+            <label>Valor contratado</label>
+            <input value="@Model.ValorContratado.ToString("C", new CultureInfo("pt-BR"))"
+                   class="form-control" readonly />
+        </div>
+
+        <div class="form-group">
+            <label>Status</label>
+            <input value="@Model.Status"
+                   class="form-control" readonly />
+        </div>
+
+    </div>
+
+    <form asp-action="Excluir" method="post">
+
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" name="id" value="@Model.Id" />
+
+        <div class="form-actions">
+
+            <button type="submit" class="btn-danger">
+                Excluir definitivamente
+            </button>
+
+            <a asp-action="Index" class="btn-secondary">
+                Voltar
+            </a>
+
+        </div>
+
+    </form>
+
+</div>

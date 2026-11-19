@@ -1,0 +1,64 @@
+﻿@model Sistema_Academia.Models.Modalidade
+
+@{
+    ViewData["Title"] = "Detalhes da Modalidade";
+}
+
+<h1 class="page-title">Detalhes da Modalidade</h1>
+
+<p class="page-description">
+    Consulte as informações cadastradas.
+</p>
+
+<div class="form-container">
+
+    <div class="details-grid">
+
+        <div class="detail-item">
+            <label>Nome</label>
+            <strong>@Model.Nome</strong>
+        </div>
+
+        <div class="detail-item">
+            <label>Capacidade máxima</label>
+            <strong>@Model.CapacidadeMaxima</strong>
+        </div>
+
+        <div class="detail-item">
+            <label>Descrição</label>
+            <strong>@(string.IsNullOrWhiteSpace(Model.Descricao) ? "Não informada" : Model.Descricao)</strong>
+        </div>
+
+        <div class="detail-item">
+            <label>Professor</label>
+            <strong>@(string.IsNullOrWhiteSpace(Model.Professor) ? "Não informado" : Model.Professor)</strong>
+        </div>
+
+        <div class="detail-item">
+            <label>Status</label>
+
+            @if (Model.Ativo)
+            {
+                <span class="status-active">Ativo</span>
+            }
+            else
+            {
+                <span class="status-inactive">Inativo</span>
+            }
+        </div>
+
+    </div>
+
+    <div class="form-actions">
+        <a asp-action="Editar"
+           asp-route-id="@Model.Id"
+           class="btn-primary">
+            Editar Modalidade
+        </a>
+
+        <a asp-action="Index" class="btn-secondary">
+            Voltar
+        </a>
+    </div>
+
+</div>
