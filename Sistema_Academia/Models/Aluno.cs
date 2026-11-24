@@ -30,12 +30,15 @@ namespace Sistema_Academia.Models
         public string Email { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Informe o telefone do aluno.")]
-        [RegularExpression(@"^(?:[0-9]{10,11}|\([0-9]{2}\)\s?[0-9]{4,5}-[0-9]{4})$",
+        [RegularExpression(
+            @"^(?:[0-9]{10,11}|\([0-9]{2}\)\s?[0-9]{4,5}-[0-9]{4})$",
             ErrorMessage = "Informe um telefone com DDD e 8 ou 9 dígitos.")]
         [Display(Name = "Telefone")]
         public string Telefone { get; set; } = string.Empty;
 
-        [StringLength(200, ErrorMessage = "O endereço deve ter no máximo 200 caracteres.")]
+        [Required(ErrorMessage = "Informe o Email do aluno.")]
+        [StringLength(200,
+            ErrorMessage = "O endereço deve ter no máximo 200 caracteres.")]
         [Display(Name = "Endereço")]
         public string Endereco { get; set; } = string.Empty;
 

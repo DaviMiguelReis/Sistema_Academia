@@ -12,6 +12,7 @@ namespace Sistema_Academia.Models
         [Display(Name = "Nome")]
         public string Nome { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "Informe uma descrição.")]
         [StringLength(300, ErrorMessage = "A descrição deve ter no máximo 300 caracteres.")]
         [Display(Name = "Descrição")]
         public string Descricao { get; set; } = string.Empty;

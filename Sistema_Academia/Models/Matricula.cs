@@ -17,6 +17,7 @@ namespace Sistema_Academia.Models
         [Display(Name = "Data de início")]
         public DateTime DataInicio { get; set; }
 
+        [Required(ErrorMessage = "Informe a data de término.")]
         [DataType(DataType.Date)]
         [Display(Name = "Data de término")]
         public DateTime? DataFim { get; set; }
@@ -39,10 +40,12 @@ namespace Sistema_Academia.Models
         public string Status { get; set; } = string.Empty;
 
         // Chaves estrangeiras
+        [Required(ErrorMessage = "Selecione um aluno.")]
         [Range(1, int.MaxValue, ErrorMessage = "Selecione um aluno.")]
         [Display(Name = "Aluno")]
         public int AlunoId { get; set; }
 
+        [Required(ErrorMessage = "Selecione um plano.")]
         [Range(1, int.MaxValue, ErrorMessage = "Selecione um plano.")]
         [Display(Name = "Plano")]
         public int PlanoId { get; set; }
